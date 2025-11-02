@@ -145,5 +145,32 @@ poll();
 
 Bạn chỉ cần nhớ: "Hỏi lần đầu: Cho tôi phần mới nhất + id cuối; Hỏi về sau: Cho tôi mọi thứ sau id đó".
 
+## 11. ĐÃ TÍCH HỢP TRONG SOURCE Ở ĐÂU?
+Trong file `public/app/index.html` đã thêm khối mã có comment:
+```
+/* NEWBIE FRIENDLY INCREMENTAL STREAMING (DB) */
+```
+Phần này tạo các hàm:
+- `startIncrementalStream(file)` khởi động poll delta.
+- `stopIncrementalStream()` dừng.
+- `appendStreamRows(rows)` thêm dữ liệu mới vào chart mà không reset.
+
+Biến `ENABLE_INCREMENTAL = true` bật/tắt chế độ.
+
+Muốn chạy:
+```js
+startIncrementalStream('A_10_00.csv');
+```
+Nếu bạn đổi file khác, gọi lại `startIncrementalStream('<file mới>')`.
+
+## 12. Bật/Tắt Nhanh Cho Thử Nghiệm
+Đặt `ENABLE_INCREMENTAL = false` để quay lại behavior cũ (các hàm incremental sẽ không chạy, bạn có thể dùng lại logic full reload nếu có).
+
+## 13. Nâng Cấp Sau Này (Gợi ý)
+- Thêm lưu `lastStreamId` vào `localStorage` để giữ cursor khi refresh trang.
+- Thêm auth token cho `stream.php` giống như `ingest.php` (bảo mật hơn).
+- Chuyển sang WebSocket push nếu cần realtime sub-second.
+- Sampling / decimation nếu dataset quá dày (giảm điểm để chart mượt).
+
 ---
 Muốn thêm phiên bản WebSocket (đẩy ngay không cần poll) hoặc kiểm tra bảo mật cho `stream.php`, cứ yêu cầu tiếp theo nhé.
